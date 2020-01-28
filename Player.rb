@@ -33,11 +33,20 @@ class Player
     # fill in deck
     7.times { add_card(:copper, @draw_pile) }
     3.times { add_card(:estate, @draw_pile) }
+
+    # shuffle deck
     @draw_pile = @draw_pile.shuffle
+
+    # draw 5 cards
+    draw(5)
   end
 
   def add_card(card, location = @discard_pile)
     location.push(card)
+  end
+
+  def draw(num = 1)
+    num.times { @hand.push(@draw_pile.shift) }
   end
 end
 

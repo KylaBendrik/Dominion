@@ -13,19 +13,23 @@ CARD_COST = {
   gold: 6,
   estate: 2,
   village: 3,
-  market: 5
+  market: 5,
+  smithy: 3
 }.freeze
 
 PLAY_CARD = {
-  village: lambda { |player|
-    player.add_action(2)
-    player.draw
-  }
   market: lambda { |player|
     player.add_action
     player.draw
     player.calculate_coins
     player.add_buy
+  },
+  smithy: lambda { |player|
+    player.draw(3)
+  },
+  village: lambda { |player|
+    player.add_action(2)
+    player.draw
   }
 }.freeze
 

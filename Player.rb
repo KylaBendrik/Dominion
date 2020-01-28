@@ -91,6 +91,17 @@ class Player
     end
   end
 
+  def dispatch(input)
+    case input
+    when 'exit'
+      puts "Ending game!"
+      exit
+    when 'buy'
+      puts "skipping action phase!"
+      @actions = 0
+    end
+  end
+
   def display
     puts '-' * 30
     puts " - #{@name}"
@@ -114,7 +125,8 @@ class Player
     display
     # play action cards until actions are spent or player moves on
     while @actions.positive?
-      input = gets.chomp
+      input = gets.chomp.downcase
+      dispatch(input)
       @actions -= 1
       display
     end

@@ -23,9 +23,11 @@ PLAY_CARD = {
 
 class Player
   attr_reader :discard_pile, :draw_pile
-  def initialize
+  def initialize(name = 'NPC')
     # initialize instance variables
+    @name = name
     @actions = 0
+    @buys = 0
     @draw_pile = []
     @discard_pile = []
     @hand = []
@@ -45,10 +47,39 @@ class Player
     location.push(card)
   end
 
+  def discard(array_of_cards)
+    array_of_cards.each do |card|
+      @hand -= [card]
+      @discard_pile.push(card)
+    end
+  end
+
+  def display
+    puts '-' * 30
+    puts " - #{@name}"
+    puts " - actions: #{@actions}"
+    puts " - buy: #{@buys}"
+    print ' - hand: '
+    pp @hand
+  end
+
   def draw(num = 1)
     num.times { @hand.push(@draw_pile.shift) }
   end
+
+  def new_turn
+    # prepare actions and buys
+    @actions = 1
+    @buys = 1
+    display
+    # play action cards until actions are spent or player moves on
+    # buy until coins are spent or player moves on
+    # end turn
+    discard(@hand)
+    draw(5)
+  end
 end
 
-beth = Player.new
+beth = Player.new('Beth')
 pp beth.draw_pile
+beth.new_turn

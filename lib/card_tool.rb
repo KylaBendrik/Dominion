@@ -1,15 +1,10 @@
 # frozen_string_literal: true
+def save(info)
+  file_name = info[:file_name]
+  name = info[:name]
+  price = info[:price]
+  value = info[:value]
 
-puts 'Hello, welcome to Dominion file creator'
-puts 'Please enter the Name of the Card'
-name = gets.chomp
-puts 'Please enter the Price of the Card'
-price = gets.chomp
-puts 'Please enter the Value of the Card'
-value = gets.chomp
-file_name = "#{name.downcase}.rb"
-
-def save(file_name, name, price, value)
   file_path = "./cards/#{file_name}"
 
   data = "require 'card'
@@ -29,4 +24,24 @@ def save(file_name, name, price, value)
   end
 end
 
-save(file_name, name, price, value)
+info = {
+  name: '',
+  price: '',
+  value: ''
+}
+
+puts 'Hello, welcome to Dominion file creator'
+
+info.each do |key, value|
+  print "Please enter the #{key} of the card: "
+  if key == :name
+    print "(Please capitalize!) "
+  end
+  info[key] = gets.chomp
+end
+
+info[:file_name] = "#{info[:name].downcase}.rb"
+pp info
+
+
+save(info)

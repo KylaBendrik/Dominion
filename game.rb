@@ -1,0 +1,1 @@
+Dir[__dir__ + '/lib/cards/'].each {|f| require f}

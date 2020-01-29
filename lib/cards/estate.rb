@@ -1,3 +1,5 @@
+require './lib/card'
+
 class Estate < Card
   def initialize
     super('Estate', 2)

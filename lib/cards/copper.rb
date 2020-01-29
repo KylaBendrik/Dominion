@@ -1,3 +1,5 @@
+require './lib/card'
+
 class Copper < Card
   def initialize
     super('Copper', 0)

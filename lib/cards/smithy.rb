@@ -1,6 +1,8 @@
+require './lib/card'
+
 class Smithy < Card
   def initialize
-    super('Smity', 4)
+    super('Smithy', 4)
   end
 
   def take_action(player)

@@ -17,4 +17,3 @@ class Card
 
   def take_action(*_args); end
 end
-

@@ -9,7 +9,7 @@ puts 'Please enter the Value of the Card'
 value = gets.to_i
 puts 'Please enter the Victory Points of the Card'
 vps = gets.to_i
-puts 'Please enter the Action of the Card'
+puts 'Please enter the Actions of the card if any. If not press Enter'
 take_action = gets.chomp
 
 file_name = "#{name.downcase}.rb"
@@ -30,7 +30,7 @@ def save(file_name, name, price, value, vps, take_action)
   if vps > 0
     points_section = "def vps
     #{vps}
-  end"
+    end"
   end
 
   ta_section = ''
@@ -38,7 +38,7 @@ def save(file_name, name, price, value, vps, take_action)
   unless take_action.empty?
     ta_section = "def take_action
     #{take_action}
-  end"
+    end"
   end
 
   data = "require 'card'
@@ -47,6 +47,7 @@ def save(file_name, name, price, value, vps, take_action)
     def initialize
       super('#{name}', #{price})
     end
+    
     #{value_section} #{points_section} #{ta_section}
   end"
 

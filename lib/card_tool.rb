@@ -1,59 +1,43 @@
 # frozen_string_literal: true
 
-puts 'Hello, welcome to Dominion file creator'
-puts 'Please enter the Name of the Card'
-name = gets.chomp
-puts 'Please enter the Price of the Card'
-price = gets.to_i
-puts 'Please enter the Value of the Card'
-value = gets.to_i
-puts 'Please enter the Victory Points of the Card'
-vps = gets.to_i
-puts 'Please enter the Actions of the card if any. If not press Enter'
-take_action = gets.chomp
-
-file_name = "#{name.downcase}.rb"
-
-def save(file_name, name, price, value, vps, take_action)
-  file_path = "./cards/#{file_name}"
-
-  value_section = ''
-
-  if value > 0
-    value_section = "def value
-      #{value}
-    end"
+# Functions used in generating card classes and files.
+module CardTool
+  def self.save(file_path, name, price, aspects)
+    IO.write(file_path, make_code(name, price, aspects))
   end
 
-  points_section = ''
+  def self.make_code(name, price, aspects = {})
+    custom_methods =
+      aspects
+        .map { |aspect, value| make_method(aspect, value) }
+        .join("\n\n  ")
 
-  if vps > 0
-    points_section = "def vps
-    #{vps}
-    end"
+    <<~CODE
+      # frozen_string_literal: true
+
+      require 'card'
+
+      class #{name} < Card
+        def initialize
+          super('#{name}', #{price})
+        end
+
+        #{custom_methods.empty? ? empty_comment : custom_methods}
+      end
+    CODE
   end
 
-  ta_section = ''
-
-  unless take_action.empty?
-    ta_section = "def take_action
-    #{take_action}
-    end"
+  def self.make_method(aspect, value)
+    <<~CODE.chomp.gsub("\n", "\n  ")
+      def #{aspect}
+        #{value}
+      end
+    CODE
   end
 
-  data = "require 'card'
-
-  class #{name} < Card
-    def initialize
-      super('#{name}', #{price})
-    end
-    
-    #{value_section} #{points_section} #{ta_section}
-  end"
-
-  File.open file_path, 'w' do |f|
-    f.write data
+  def self.empty_comment
+    '# Add definition here'
   end
+
+  private_class_method(:make_method, :empty_comment)
 end
-
-save(file_name, name, price, value, vps, take_action)

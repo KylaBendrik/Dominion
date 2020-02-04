@@ -6,7 +6,6 @@ class Smithy < Card
   end
 
   def take_action(player)
-    player.draw_cards(3) # default is draw 1 card
-    player.use_action # uses an action
+    # +3 cards
   end
 end

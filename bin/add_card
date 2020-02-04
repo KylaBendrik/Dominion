@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/card_tool'
+
+puts 'Hello, welcome to Dominion file creator'
+puts 'Please enter the Name of the Card'
+name = gets.chomp
+puts 'Please enter the Price of the Card'
+price = gets.to_i
+puts 'Please enter the Value of the Card'
+value = gets.to_i
+puts 'Please enter the Victory Points of the Card'
+vps = gets.to_i
+puts 'Please enter the Action of the Card'
+take_action = gets.chomp
+
+file_name = name.downcase.tr(' ', '_')
+file_path = File.expand_path("../lib/cards/#{file_name}.rb", __dir__)
+
+CardTool.save(file_path, name, price, value, vps, take_action)

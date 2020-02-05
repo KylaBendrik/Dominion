@@ -8,12 +8,14 @@ class Card
   end
 
   def points
+    # Victory Points
     0
   end
 
   def value
+    # Treasures, or extra coins
     0
   end
 
-  def take_action(*_args); end
+  def take_action(*_args); end # Catch-all Method. Will add more later
 end

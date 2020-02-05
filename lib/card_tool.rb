@@ -5,43 +5,44 @@ def save(info)
   price = info[:price]
   value = info[:value]
 
-  file_path = "./cards/#{file_name}"
-
-  data = "require 'card'
-
-  class #{name} < Card
-    def initialize
-      super('#{name}', #{price})
-    end
-
-    def value
-      #{value}
-    end
-  end"
-
-  File.open file_path, 'w' do |f|
-    f.write data
+# Functions used in generating card classes and files.
+module CardTool
+  def self.save(file_path, name, price, aspects)
+    IO.write(file_path, make_code(name, price, aspects))
   end
-end
 
-info = {
-  name: '',
-  price: '',
-  value: ''
-}
+  def self.make_code(name, price, aspects = {})
+    custom_methods =
+      aspects
+        .map { |aspect, value| make_method(aspect, value) }
+        .join("\n\n  ")
 
-puts 'Hello, welcome to Dominion file creator'
+    <<~CODE
+      # frozen_string_literal: true
 
-info.each do |key, value|
-  print "Please enter the #{key} of the card: "
-  if key == :name
-    print "(Please capitalize!) "
+      require 'card'
+
+      class #{name} < Card
+        def initialize
+          super('#{name}', #{price})
+        end
+
+        #{custom_methods.empty? ? empty_comment : custom_methods}
+      end
+    CODE
   end
-  info[key] = gets.chomp
+
+  def self.make_method(aspect, value)
+    <<~CODE.chomp.gsub("\n", "\n  ")
+      def #{aspect}
+        #{value}
+      end
+    CODE
+  end
+
+  def self.empty_comment
+    '# Add definition here'
+  end
+
+  private_class_method(:make_method, :empty_comment)
 end
-
-info[:file_name] = "#{info[:name].downcase}.rb"
-pp info
-
-
-save(info)

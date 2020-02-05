@@ -6,7 +6,6 @@ class Smithy < Card
   end
 
   def take_action(player)
-    player.draw_cards(3)
-    player.use_action
+    # +3 cards
   end
 end
